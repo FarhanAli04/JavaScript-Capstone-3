@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cart storage
     const cart = [];
 
-    // Update cart display
+    // cart display
     function updateCart() {
         const cartContainer = document.querySelector('#offcanvasCart .offcanvas-body');
         cartContainer.innerHTML = '';
@@ -22,19 +22,43 @@ document.addEventListener('DOMContentLoaded', () => {
             cartContainer.innerHTML += `
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <span>${item.name} - ${item.price}</span>
-                    <button class="btn btn-danger btn-sm" onclick="removeFromCart('${item.id}')">Remove</button>
+                    <div class="d-flex align-items-center">
+                        <input type="number" class="form-control form-control-sm me-2" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', this.value - ${item.quantity})">
+                        <button class="btn btn-danger btn-sm" onclick="removeFromCart('${item.id}')">Remove</button>
+                    </div>
                 </div>
             `;
         });
     }
 
-    // Function to add item to cart
+    // For add item to cart
     function addToCart(id, name, price) {
-        cart.push({ id, name, price });
+        const itemIndex = cart.findIndex(item => item.id === id);
+        if (itemIndex > -1) {
+            // Item already in cart, increase quantity
+            cart[itemIndex].quantity += 1;
+        } else {
+            // New item, add to cart
+            cart.push({ id, name, price, quantity: 1 });
+        }
         updateCart();
     }
 
-    // Add event listeners to all unique Add to cart buttons in the carousel
+    // Update quantity
+    function updateQuantity(id, newQuantity) {
+        const itemIndex = cart.findIndex(item => item.id === id);
+        if (itemIndex > -1) {
+            const quantity = parseInt(newQuantity, 10);
+            if (quantity > 0) {
+                cart[itemIndex].quantity = quantity;
+            } else {
+                cart[itemIndex].quantity = 1; // Ensure minimum quantity of 1
+            }
+            updateCart();
+        }
+    }
+
+    // Add event listeners to all Add to cart buttons in the carousel
     document.querySelectorAll('#productCarousel .carousel-item button[id^="add-to-cart-"]').forEach(button => {
         button.addEventListener('click', (event) => {
             const id = event.target.id.split('-').pop();
@@ -47,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Add event listeners to all unique Add to cart buttons in the grid section
+    // Add event listeners to all Add to cart buttons in the grid section
     document.querySelectorAll('.row .col-md-3 button[id^="add-to-cart-"]').forEach(button => {
         button.addEventListener('click', (event) => {
             const id = event.target.id.split('-').pop();
@@ -64,7 +88,13 @@ document.addEventListener('DOMContentLoaded', () => {
     window.removeFromCart = function(id) {
         const index = cart.findIndex(item => item.id === id);
         if (index > -1) {
-            cart.splice(index, 1);
+            if (cart[index].quantity > 1) {
+                // Decrease quantity if more than one
+                cart[index].quantity -= 1;
+            } else {
+                // Remove item if quantity is one
+                cart.splice(index, 1);
+            }
             updateCart();
         }
     };

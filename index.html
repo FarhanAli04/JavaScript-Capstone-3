@@ -26,7 +26,7 @@
         </div>
 
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg rounded-5 mx-5 bg-white">
+        <nav class="navbar navbar-expand-lg rounded-5 mx-5 bg-white sticky-top">
             <div class="container">
                 <a class="navbar-brand fs-3 bold" href="#">Cartzilla</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -43,8 +43,15 @@
                             <a class="nav-link" href="#">Shop</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a href="#" class="nav-link">Account</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Accounts
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="./signUp/signUp.html">Sign Up</a></li>
+                                <li><a class="dropdown-item" href="./loginPage/login.html">Sign In</a></li>
+                            </ul>
                         </li>
+                        
                         <li class="nav-item">
                             <a href="#" class="nav-link">Page</a>
                         </li>
@@ -86,7 +93,6 @@
         <div>
             <h1 class="text-center fw-bolder mt-5">Everything You Need for a Modern Interior</h1>
         </div>
-
         <!-- Product Carousel -->
         <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -118,9 +124,8 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-        
-        
     </div>
+
     <!-- home section 2  -->
     <div class="container text-center my-5">
         <div class="row">
@@ -150,8 +155,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!-- Popular products  section-->
     <div class="container my-5">
